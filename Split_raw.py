@@ -192,6 +192,5 @@ def ObtenerEventos8Byte():
 
 index=ObtenerEventos8Byte()
 
-print("prueba del commit")
-print("hola mundon de git")
+
 input()
