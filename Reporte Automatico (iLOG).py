@@ -8,7 +8,8 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-
+sadasd1
+if else:sq 
 options=webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_argument("--disable-extensions")
