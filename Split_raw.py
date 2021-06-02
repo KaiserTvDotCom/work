@@ -152,8 +152,8 @@ index=ObtenerEventos2Byte(1)[0]
 if v_fotocelda==0:
     v_panel=v_bateria
     label= "Cargando..."
-elif v_fotocelda > 35 and v_fotocelda < 100:
-    v_panel=0
+elif v_fotocelda >= 35 and v_fotocelda <= 100:
+    v_panel=v_fotocelda
     label= "Panel Desconectado!"
 else:
     v_panel=v_bateria - v_fotocelda
