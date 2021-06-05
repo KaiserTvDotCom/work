@@ -1,6 +1,4 @@
-def main():
-    pass
-main()
+import os
 
-def man2():
-    pass
+os.mkdir("new_dir")
+print(os.getcwd())
