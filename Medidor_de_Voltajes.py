@@ -109,7 +109,7 @@ for trama in f:
     voltajes_bateria.append(v_bateria)
     voltajes_panel.append(v_panel)
    
-arreglo={"Hora": fechas, "Voltaje en bateria": voltajes_bateria, "Voltaje en panel":v_panel}
+arreglo={"Hora": fechas, "Voltaje en bateria": voltajes_bateria, "Voltaje en panel":voltajes_panel}
 
 df = pd.DataFrame(data=arreglo)
 df.to_excel(excel_writer="Voltajes_prueba.xlsx")
