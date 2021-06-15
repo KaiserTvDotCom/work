@@ -117,7 +117,7 @@ eventos_2B="0x" + eventos_2B
 eventos_2B=int(eventos_2B,0)
 print("Numero de eventos de 2 bytes: " + str(eventos_2B))
 
-def ObtenerEventos2Byte(flag):
+def ObtenerEventos2Byte():
     
     I_Inicial=index+2
     for evento in range(1,eventos_2B+1):
@@ -130,37 +130,15 @@ def ObtenerEventos2Byte(flag):
         evento_2B_Value="0x" + evento_2B_Value
         evento_2B_Value=int(evento_2B_Value,0)
 
-        if evento_2B_ID==22:
-            v_fotocelda=int(evento_2B_Value)
-        if evento_2B_ID==29:
-            v_bateria=int(evento_2B_Value)
-        if flag==0: 
-            pass
-        else:
-            if evento_2B_ID==22:
-                pass
-            else:
-                print("ID= " + str(evento_2B_ID),"Valor: " + str(evento_2B_Value))
+        
+        print("ID= " + str(evento_2B_ID),"Valor: " + str(evento_2B_Value))
         
         I_Inicial+=8
-    return   I_Inicial,v_bateria,v_fotocelda
+    return   I_Inicial
 
-v_fotocelda=ObtenerEventos2Byte(0)[2]
-v_bateria=ObtenerEventos2Byte(0)[1]
-index=ObtenerEventos2Byte(1)[0]
 
-if v_fotocelda==0:
-    v_panel=v_bateria
-    label= "Cargando..."
-elif v_fotocelda >= 35 and v_fotocelda <= 100:
-    v_panel=v_fotocelda
-    label= "Panel Desconectado!"
-else:
-    v_panel=v_bateria - v_fotocelda
-    label= "No hay suficiente luz para cargar."
+index=ObtenerEventos2Byte()
 
-print("ID= 22 Valor:",v_panel)
-print("Estado de carga:",label)
 
 #Numero de eventos que tienen 4 bytes
 eventos_4B=string[index:index+2]
