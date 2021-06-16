@@ -16,7 +16,7 @@ i=0
 fechas=list()
 temperaturas=list()
 array_satelites=list()
-
+señales_gsm=list()
 
 for trama in f:
 
@@ -51,26 +51,32 @@ for trama in f:
 
             if evento_1B_ID==32:
                 temp=int(evento_1B_Value)
-            
+            if evento_1B_ID==27:
+                señal_gsm=evento_1B_Value
+
             I_Inicial+=6
-        return   I_Inicial,temp
+        return   I_Inicial,temp,señal_gsm
 
     temperatura=ObtenerEventos1Byte()[1]
-    print(temperatura)
+    señal_gsm=ObtenerEventos1Byte()[2]
+    
+    
+    print("Temperatura",temperatura)
     satelites=trama[38:40]
     satelites= "0x" + satelites
     satelites = int(satelites,0)
     print("Satelites: " + str(satelites))
+    print("Nivel de señal GSM:" ,señal_gsm)
     print("----------------")
     i+=1
 
     fechas.append(timestamp)
     array_satelites.append(satelites)
     temperaturas.append(temperatura)
-
-arreglo={"Hora": fechas, "Temperatura:": temperaturas, "Satelites":array_satelites}
+    señales_gsm.append(señal_gsm)
+arreglo={"Hora": fechas, "Temperatura:": temperaturas, "Satelites":array_satelites,"Nivel de señal GSM": señales_gsm}
 
 df = pd.DataFrame(data=arreglo)
-df.to_excel(excel_writer="Termometro_Satelites.xlsx")
+df.to_excel(excel_writer="Termometro_Satelites_Señal-GSM.xlsx")
 
 s=input()
