@@ -23,7 +23,7 @@ total=cta_dia+cta_mes
 options=webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_argument("--disable-extensions")
-#options.add_argument("--headless")
+options.add_argument("--headless")
 
 
 driver=webdriver.Chrome(ChromeDriverManager().install(),chrome_options=options)
@@ -106,7 +106,7 @@ for boton in botones:
     driver.execute_script(script)
 
 print("Se finalizaron {} tareas en estatus pendiente ".format(tareas_cerradas))    
-print("Presiona cualquier tecla para salir")    
+print("Presiona ENTER para salir")    
 s=input()
 
 driver.quit()

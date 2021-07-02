@@ -107,6 +107,6 @@ for boton in botones:
 
 
 print("Se finalizaron {} tareas en estatus pendiente ".format(tareas_cerradas)) 
-print("Presiona cualquier tecla para salir")           
+print("Presiona ENTER salir")           
 s=input()
 driver.quit()
