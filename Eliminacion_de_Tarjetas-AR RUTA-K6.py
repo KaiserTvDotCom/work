@@ -23,7 +23,7 @@ total=cta_dia+cta_mes
 options=webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_argument("--disable-extensions")
-options.add_argument("--headless")
+#options.add_argument("--headless")
 
 
 driver=webdriver.Chrome(ChromeDriverManager().install(),chrome_options=options)
@@ -49,7 +49,7 @@ WebDriverWait(driver,8).until(
     EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[4]/div/div[4]/div/div/ul/li[3]/ul/li[1]/a"))).click()
 #Clickear en editar
 WebDriverWait(driver,8).until( 
-    EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[5]/div/div[4]/div/div[1]/div/div/div/div[2]/div/div/div[2]/div/div/div[2]/table/tbody/tr/td[6]/button[1]"))).click()
+    EC.element_to_be_clickable((By.XPATH,"/html/body/div/div[5]/div/div[4]/div/div[1]/div/div/div/div[2]/div/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[6]/button[1]"))).click()
                                           
 rutas=driver.find_elements_by_class_name("btn-info".replace(" ",""))
 
@@ -105,8 +105,8 @@ for boton in botones:
         removeChildren(modal);"""
     driver.execute_script(script)
 
-
-print("Se finalizaron {} tareas en estatus pendiente ".format(tareas_cerradas)) 
-print("Presiona cualquier tecla para salir")           
+print("Se finalizaron {} tareas en estatus pendiente ".format(tareas_cerradas))    
+print("Presiona cualquier tecla para salir")    
 s=input()
+
 driver.quit()

@@ -81,8 +81,8 @@ def Variables_irrelevantes():
 
 Variables_irrelevantes()
 #trigger que disparo el registro
-"""trigger=string[46:50]
-print("Trigger: " + str(trigger))"""
+trigger=string[46:50]
+print("Trigger: " + str(trigger))
 
 #Numero de eventos que tienen 1 byte
 eventos_1B=string[50:52]
