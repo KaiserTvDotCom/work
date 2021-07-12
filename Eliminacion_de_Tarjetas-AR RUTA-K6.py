@@ -51,8 +51,8 @@ WebDriverWait(driver,8).until(
     EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[4]/div/div[4]/div/div/ul/li[3]/ul/li[1]/a"))).click()
 #Clickear en editar
 WebDriverWait(driver,8).until( 
-    EC.element_to_be_clickable((By.XPATH,"/html/body/div/div[5]/div/div[4]/div/div[1]/div/div/div/div[2]/div/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[6]/button[1]"))).click()
-                                          
+    EC.element_to_be_clickable((By.XPATH,"/html/body/div/div[5]/div/div[4]/div/div[1]/div/div/div/div[2]/div/div/div[2]/div/div/div[2]/table/tbody/tr[2]/td[6]/button[1]/span"))).click()
+                                                     
 rutas=driver.find_elements_by_class_name("btn-info".replace(" ",""))
 
 botones=driver.find_elements_by_class_name("btn-success".replace(" ",""))
