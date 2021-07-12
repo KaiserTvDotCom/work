@@ -89,43 +89,10 @@ for boton in botones:
     print("Tareas Totales:", indice-2)
     
 
-    def tareas_sust():
-        tareas_posibles=0
-        for tarea in tareas:
-            try:
-                fecha=driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div[2]/table/tbody/tr["+str(i)+"]/td[2]")
-                fecha=fecha.text                    
-                    
-                def procesarEpoch():
-                    
-                    div1=fecha.split("/")
-                
-                    dia=int(div1[0])
-                    mes=int(div1[1])
-                    año=int(div1[2])
-                    
-                    ts= datetime(año,mes,dia,0,0,0).timestamp()
-                    return int(ts)
-                
-                epoca=procesarEpoch() 
-                if epoca < epoch:
-                    tareas_posibles+=1
-            except:
-                pass
-        return tareas_posibles
-    print(tareas_sust)
-    i=indice-tareas_sust()
-    i*=-1
-    
-
-
-
-    indice=0
-    print(i)
+    tareas_posibles=0
     for tarea in tareas:
         
         try:
-        
             fecha=driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div[2]/table/tbody/tr["+str(i)+"]/td[2]")
             fecha=fecha.text                    
             
@@ -141,30 +108,63 @@ for boton in botones:
                 return int(ts)
             
             epoca=procesarEpoch() 
+            epoca+=10000
             if epoca < epoch:
-                try:
-                    tarea.click()
-                    time.sleep(1)
-                except:
-                    pass
+                tareas_posibles+=1
         except:
             pass
+        i+=1
+    index=-1
+
+
+
+    indice=0
+    
+    for tarea in tareas:
         
-        """    
-            WebDriverWait(driver,0).until( 
-                EC.element_to_be_clickable((By.ID,"editar_tarea"))).click()
-            WebDriverWait(driver,0).until( 
-                EC.element_to_be_clickable((By.ID,"finishTask"))).click()
-            for x in range(5):
-                alert = driver.switch_to.alert
-                alert.accept()
-                alert.dismiss()
-            print("Tarea Finalizada!")
+        try:
+        
+            fecha=driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div[2]/table/tbody/tr["+str(index)+"]/td[2]")
+            fecha=fecha.text                    
             
-            tareas_acabadas+=1    
+            def procesarEpoch():
+                
+                div1=fecha.split("/")
             
+                dia=int(div1[0])
+                mes=int(div1[1])
+                año=int(div1[2])
+                
+                ts= datetime(año,mes,dia,0,0,0).timestamp()
+                return int(ts)
+            
+            epoca=procesarEpoch() 
+            if epoca < epoch:
+            
+                try:
+                    tarea.click()
+                    
+                    WebDriverWait(driver,0).until( 
+                        EC.element_to_be_clickable((By.ID,"editar_tarea"))).click()
+                    WebDriverWait(driver,1).until( 
+                        EC.element_to_be_clickable((By.ID,"finishTask"))).click()
+                    for x in range(5):
+                        alert = driver.switch_to.alert
+                        alert.accept()
+                        alert.dismiss()
+                    print("Tarea Finalizada!")
+            
+                    tareas_acabadas+=1    
+            
+                except:
+                    pass
+                   
         except:
-            pass"""
+            pass
+        index+=1
+           
+            
+        
         
     
     i+=1
@@ -180,8 +180,7 @@ for boton in botones:
         removeChildren(modal);"""
     driver.execute_script(script)
     print("--------------------")
-    if i==3:
-        break 
+    
 print("Se finalizaron {} tareas en estatus pendiente ".format(tareas_acabadas))    
 print("Presiona ENTER para salir")    
 s=input()
