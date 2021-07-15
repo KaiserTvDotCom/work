@@ -42,147 +42,40 @@ WebDriverWait(driver,5).until(
 #Clickear en entrar
 WebDriverWait(driver,5).until( 
     EC.element_to_be_clickable((By.CLASS_NAME,"btn btn-primary btn-block".replace(" ",".")))).click()
+time.sleep(2)
+
+driver.execute_script("window.open('');")
+driver.switch_to.window(driver.window_handles[1])
+driver.get("http://intech.com.mx/sosweb/analisis_ruta.html?empresaId=-MUB-3ENmgqhkimA7JXF")
+
+WebDriverWait(driver,5).until( 
+    EC.element_to_be_clickable((By.ID,"btnTasks"))).click()
 time.sleep(5)
-#Clickear en empresa
-WebDriverWait(driver,8).until( 
-    EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[4]/div/div[4]/div/div/ul/li[3]/a"))).click()
-#Clickear en flotilla
-WebDriverWait(driver,8).until( 
-    EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[4]/div/div[4]/div/div/ul/li[3]/ul/li[1]/a"))).click()
-#Clickear en editar
-WebDriverWait(driver,8).until( 
-    EC.element_to_be_clickable((By.XPATH,"/html/body/div/div[5]/div/div[4]/div/div[1]/div/div/div/div[2]/div/div/div[2]/div/div/div[2]/table/tbody/tr[1]/td[6]/button[1]"))).click()
-                                          
-rutas=driver.find_elements_by_class_name("btn-info".replace(" ",""))
 
-botones=driver.find_elements_by_class_name("btn-success".replace(" ",""))
+lista_rutas=list()
+fechas=list()
 
-tareas_posibles=0
-tareas_acabadas=0
-
-
-indice=0
-epoch = datetime.now().timestamp()
-epoch-=86400
-print("El epoch Global es:",int(epoch))
-
-
-for boton in botones:
+tareas_activas=driver.find_elements_by_class_name("text-bold")
+fechas_activas=driver.find_elements_by_class_name("panel-body")
+for tarea in tareas_activas:
+    tarea=tarea.text
+    split=tarea.split()
+    sp1=split[0]
     
-    boton.click()
-    WebDriverWait(driver,8).until( 
-    EC.element_to_be_clickable((By.NAME,"dataTable1_length"))).click()
-    webdriver.ActionChains(driver).key_down(Keys.ARROW_DOWN).key_down(Keys.ARROW_DOWN).key_down(Keys.ARROW_DOWN).key_down(Keys.ENTER).perform()
-    time.sleep(1)
-    tareas=driver.find_elements_by_class_name("sorting_1")
-    
-    unidad=driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div[2]/table/tbody/tr[1]/td[6]")
-    unidad=unidad.text
-    u=unidad.split()
-    uni=u[0]
-    print("Unidad:",uni)
-    
-    i=1
-
-    for tarea in tareas:
-        indice+=1
-    print("Tareas Totales:", indice-2)
-    
-
-    tareas_posibles=0
-    for tarea in tareas:
-        
-        try:
-            fecha=driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div[2]/table/tbody/tr["+str(i)+"]/td[2]")
-            fecha=fecha.text                    
-            
-            def procesarEpoch():
-                
-                div1=fecha.split("/")
-            
-                dia=int(div1[0])
-                mes=int(div1[1])
-                año=int(div1[2])
-                
-                ts= datetime(año,mes,dia,0,0,0).timestamp()
-                return int(ts)
-            
-            epoca=procesarEpoch() 
-            epoca+=10000
-            if epoca < epoch:
-                tareas_posibles+=1
-        except:
-            pass
-        i+=1
-    index=-1
+    lista_rutas.append(sp1)
 
 
+acc=1
+for fecha in fechas_activas:
+    if not acc%2==0:
+        fecha=fecha.text
+        split=fecha.split()
+        spl=split[5]
+        fechas.append(spl)
 
-    indice=0
-    
-    for tarea in tareas:
-        
-        try:
-        
-            fecha=driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/div[2]/table/tbody/tr["+str(index)+"]/td[2]")
-            fecha=fecha.text                    
-            
-            def procesarEpoch():
-                
-                div1=fecha.split("/")
-            
-                dia=int(div1[0])
-                mes=int(div1[1])
-                año=int(div1[2])
-                
-                ts= datetime(año,mes,dia,0,0,0).timestamp()
-                return int(ts)
-            
-            epoca=procesarEpoch() 
-            if epoca < epoch:
-            
-                try:
-                    tarea.click()
-                    
-                    WebDriverWait(driver,0).until( 
-                        EC.element_to_be_clickable((By.ID,"editar_tarea"))).click()
-                    WebDriverWait(driver,1).until( 
-                        EC.element_to_be_clickable((By.ID,"finishTask"))).click()
-                    for x in range(5):
-                        alert = driver.switch_to.alert
-                        alert.accept()
-                        alert.dismiss()
-                    print("Tarea Finalizada!")
-            
-                    tareas_acabadas+=1    
-            
-                except:
-                    pass
-                   
-        except:
-            pass
-        index+=1
-           
-            
-        
-        
-    
-    i+=1
-       
-    print("Tareas posibles:",tareas_posibles)        
-    tareas_posibles=0    
+    acc+=1
+fechas=fechas[:-2]
+dicc=dict(zip(lista_rutas,fechas))
+print(dicc)
 
-    i=1   
-    script="""var modal = document.getElementById('modalDiv');
-        modal.style.display = 'none';
-        currentSource = null;
-        currentTrackeable = null;
-        removeChildren(modal);"""
-    driver.execute_script(script)
-    print("--------------------")
-    
-print("Se finalizaron {} tareas en estatus pendiente ".format(tareas_acabadas))    
-print("Presiona ENTER para salir")    
-s=input()
 
-driver.quit()
