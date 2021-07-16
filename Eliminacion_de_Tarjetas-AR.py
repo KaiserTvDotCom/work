@@ -152,6 +152,7 @@ for boton in botones:
 
     tareas_posibles=0
     if uni in dicc.keys():
+        print("Finalizando tarea...")
         for tarea in tareas:
             
             try:
