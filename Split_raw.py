@@ -79,9 +79,17 @@ def Variables_irrelevantes():
     #HDOP
     hdop=string[44:46]
 
+velocidad=string[40:44]
+velocidad= "0x" + velocidad
+velocidad = int(velocidad,0)
+print ("Velocidad: "+ str(velocidad))
+
+
 Variables_irrelevantes()
 #trigger que disparo el registro
 trigger=string[46:50]
+trigger= "0x" + trigger
+trigger= int(trigger,0)
 print("Trigger: " + str(trigger))
 
 #Numero de eventos que tienen 1 byte
