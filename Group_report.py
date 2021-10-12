@@ -128,7 +128,7 @@ for uni in f:
         
         arreglo={"Hora": fechas, "V_bateria": voltajes_bateria, "V_panel":voltajes_panel}
         dicc.update(arreglo)
-        print(dicc,ind)
+        print(dicc)
         df = pd.DataFrame(data=dicc)
         df.to_excel(excel_writer="Group_report_volts.xlsx")   
         ind+=1
