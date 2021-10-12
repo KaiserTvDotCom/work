@@ -13,7 +13,7 @@ options=webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 options.add_argument("--disable-extensions")
 options.add_argument("--headless")
-
+options.add_argument("--log-level=3")
 
 driver=webdriver.Chrome(ChromeDriverManager().install(),chrome_options=options)
 
@@ -21,22 +21,16 @@ driver=webdriver.Chrome(ChromeDriverManager().install(),chrome_options=options)
 lista_imei=[860112047096146,
 865284040234027,
 865284040222253,
-860112047026226,
 865284040281242,
 865284040300166,
 865284042182901,
-865284040213849,
-860112047026135,
 865284045622887,
 865284040241857,
-865284045679648,
 865284045612821,
 865284040222196,
 860112047096146,
 865284045624438,
-865284040234225,
 860112047103405,
-865284040294112,
 865284040295283,
 865284041009402,
 865284042692438,
@@ -45,7 +39,8 @@ lista_imei=[860112047096146,
 865284040241857,
 865284045626144,
 867553056728447,
-867553056728371
+867553056728371,
+867553053385928
 ]
 
 
@@ -78,14 +73,15 @@ def buscarImei(Imei):
         EC.element_to_be_clickable((By.CLASS_NAME,"centerRow"))).click()
     #Copiar informacion de la lista
     WebDriverWait(driver,5).until( 
-        EC.element_to_be_clickable((By.XPATH,"/html/body/div/div/div/div[1]/div[1]/div/div[1]/div[3]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[6]")))
+        EC.element_to_be_clickable((By.XPATH,"/html/body/div/div/div[1]/div[1]/div[1]/div/div[1]/div[2]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[6]")))
+                                              
     #Procesar la lista 
 def obtenerFecha():
-        texto_columnas=driver.find_element_by_xpath("/html/body/div/div/div/div[1]/div[1]/div/div[1]/div[3]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[6]")
+        texto_columnas=driver.find_element_by_xpath("/html/body/div/div/div[1]/div[1]/div[1]/div/div[1]/div[2]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[6]")
         fecha=texto_columnas.text
         return fecha
 def obtenerBateria():
-        texto_bat=driver.find_element_by_xpath("/html/body/div/div/div/div[1]/div[1]/div/div[1]/div[3]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[8]")
+        texto_bat=driver.find_element_by_xpath("/html/body/div/div/div[1]/div[1]/div[1]/div/div[1]/div[2]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[8]")
         bateria=texto_bat.text
         return bateria
 def borrarImei():
@@ -98,6 +94,8 @@ porcentajes_baterias=list()
 trackers=list()
 arreglo=dict()
 tuplo=tuple()
+t_on=0
+t_off=0
 
 """for imei in lista_imei:
     buscarImei(imei)"""
@@ -109,10 +107,12 @@ for imei in lista_imei:
         fechas.append(obtenerFecha())
         porcentajes_baterias.append(obtenerBateria())
         print("El Imei {} fue encontrado".format(imei))
+        t_on+=1
     except:
         trackers.append(str(imei))
         fechas.append("")
         porcentajes_baterias.append("")
+        t_off+=1
         print("El Imei {} NO fue encontrado".format(imei))
     borrarImei()
 
@@ -120,13 +120,15 @@ arreglo={"Tracker": trackers, "Fecha":fechas, "% Bateria":porcentajes_baterias}
 
 
 df = pd.DataFrame(data=arreglo)
+
 df.to_excel(excel_writer="Fechas_hoy_iLOG.xlsx")
 
 print("aplication title is ",driver.title)
 print("aplication url is ",driver.current_url)
 
 
-print ("Prueba del git")
+print ("trackers activos: ",t_on)
+print ("trackers inactivos: ",t_off)
 time.sleep(2)
 driver.quit()
 
