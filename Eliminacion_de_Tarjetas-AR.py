@@ -29,78 +29,89 @@ options.add_argument("--headless")
 options.add_argument("--log-level=3")
 
 
+dicc=dict()
+driver=webdriver.Chrome(ChromeDriverManager().install(),chrome_options=options)
+
+driver.get("http://intech.com.mx/sosweb/login.html")
+
+#Ingresar email
+WebDriverWait(driver,5).until( 
+    EC.element_to_be_clickable((By.ID,"inputUsernameEmail"))).send_keys("mgallegosr08@hotmail.com")
+#Ingresa contraseña
+WebDriverWait(driver,5).until(
+    EC.element_to_be_clickable((By.ID,"inputPassword"))).send_keys("ruta_17")
+#Clickear en entrar
+WebDriverWait(driver,5).until( 
+    EC.element_to_be_clickable((By.CLASS_NAME,"btn btn-primary btn-block".replace(" ",".")))).click()
+time.sleep(2)
+
+driver.execute_script("window.open('');")
+
+def obtenerDicc(f):
+
+        driver.switch_to.window(driver.window_handles[1])
+        if(f==0):
+            driver.get("http://intech.com.mx/sosweb/analisis_ruta.html?empresaId=-MUB-3ENmgqhkimA7JXF")
+
+        WebDriverWait(driver,5).until( 
+            EC.element_to_be_clickable((By.ID,"btnTasks"))).click()
+        time.sleep(5)
+
+        WebDriverWait(driver,10).until( 
+            EC.element_to_be_clickable((By.CLASS_NAME,"text-bold")))
+
+        lista_rutas=list()
+        fechas=list()
+        now=datetime.now()
+        dat=now.strftime("%d/%m/%Y")
+        print(dat)
+        tareas_activas=driver.find_elements_by_class_name("text-bold")
+        fechas_activas=driver.find_elements_by_class_name("panel-body")
+        for tarea in tareas_activas:
+            tarea=tarea.text
+            split=tarea.split()
+            sp1=split[0]
+            
+            lista_rutas.append(sp1)
+
+
+        acc=1
+        for fecha in fechas_activas:
+            if not acc%2==0:
+                fecha=fecha.text
+                split=fecha.split()
+                spl=split[5]
+                fechas.append(spl)
+            acc+=1
+        fechas=fechas[:-1]
+
+        dicc=dict()
+
+        if len(fechas) == len (lista_rutas):
+            for i in range(len(lista_rutas)):
+                if  fechas[i] != dat:
+                    dicc.update({lista_rutas[i]: fechas[i] })
+        else:
+            print("Listas no son iguales, revisar script")
+            exit()
+
+        print(dicc)
+        driver.switch_to.window(driver.window_handles[0])
+        return dicc
+while True:
+    try:    
+        dicc=obtenerDicc(0)
+        break
+    except:
+        pass
 def eliminar_tarjetas():
-    driver=webdriver.Chrome(ChromeDriverManager().install(),chrome_options=options)
 
-    driver.get("http://intech.com.mx/sosweb/login.html")
-
-    #Ingresar email
-    WebDriverWait(driver,5).until( 
-        EC.element_to_be_clickable((By.ID,"inputUsernameEmail"))).send_keys("mgallegosr08@hotmail.com")
-    #Ingresa contraseña
-    WebDriverWait(driver,5).until(
-        EC.element_to_be_clickable((By.ID,"inputPassword"))).send_keys("ruta_17")
-    #Clickear en entrar
-    WebDriverWait(driver,5).until( 
-        EC.element_to_be_clickable((By.CLASS_NAME,"btn btn-primary btn-block".replace(" ",".")))).click()
-    time.sleep(2)
-
-    driver.execute_script("window.open('');")
-
-    
-    driver.switch_to.window(driver.window_handles[1])
-    driver.get("http://intech.com.mx/sosweb/analisis_ruta.html?empresaId=-MUB-3ENmgqhkimA7JXF")
-
-    WebDriverWait(driver,5).until( 
-        EC.element_to_be_clickable((By.ID,"btnTasks"))).click()
-    time.sleep(5)
-
-    WebDriverWait(driver,10).until( 
-        EC.element_to_be_clickable((By.CLASS_NAME,"text-bold")))
-
-    lista_rutas=list()
-    fechas=list()
-    now=datetime.now()
-    dat=now.strftime("%d/%m/%Y")
-    print(dat)
-    tareas_activas=driver.find_elements_by_class_name("text-bold")
-    fechas_activas=driver.find_elements_by_class_name("panel-body")
-    for tarea in tareas_activas:
-        tarea=tarea.text
-        split=tarea.split()
-        sp1=split[0]
-        
-        lista_rutas.append(sp1)
-
-
-    acc=1
-    for fecha in fechas_activas:
-        if not acc%2==0:
-            fecha=fecha.text
-            split=fecha.split()
-            spl=split[5]
-            fechas.append(spl)
-        acc+=1
-    fechas=fechas[:-1]
-
-    dicc=dict()
-
-    if len(fechas) == len (lista_rutas):
-        for i in range(len(lista_rutas)):
-            if  fechas[i] != dat:
-                dicc.update({lista_rutas[i]: fechas[i] })
-    else:
-        print("Listas no son iguales, revisar script")
-        exit()
-
-    print(dicc)
-    driver.switch_to.window(driver.window_handles[0])
     time.sleep(1)
     #Clickear en empresa
-    WebDriverWait(driver,8).until( 
+    WebDriverWait(driver,10).until( 
         EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[4]/div/div[4]/div/div/ul/li[3]/a"))).click()
     #Clickear en flotilla
-    WebDriverWait(driver,8).until( 
+    WebDriverWait(driver,10).until( 
         EC.element_to_be_clickable((By.XPATH,"/html/body/div[1]/div[4]/div/div[4]/div/div/ul/li[3]/ul/li[1]/a"))).click()
     #Clickear en editar
     WebDriverWait(driver,8).until( 
@@ -399,20 +410,20 @@ def eliminar_tarjetas():
             print("--------------------")
         
 
-    print("Saliendo del navegador")    
+while True:
+    if dicc:
+        try:
+            eliminar_tarjetas()
+            dicc=obtenerDicc(1)
+        except:
+            pass
+    else:
+        print("No hay tareas por finalizar")
+        break
 
-            
+    
 
-    driver.quit()
-
-eli=0
-
-while eli==0:
-    try:
-        eliminar_tarjetas()
-        eli=1
-        
-    except:
-        eli=0
+print("Saliendo del navegador")    
+driver.quit()
 print("SCRIPT FINALIZADO")
 s=input()
