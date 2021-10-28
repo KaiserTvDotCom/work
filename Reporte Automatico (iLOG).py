@@ -31,10 +31,7 @@ lista_imei=[860112047096146,
 860112047096146,
 865284045624438,
 860112047103405,
-<<<<<<< HEAD
-=======
 860112047112760,
->>>>>>> pruebas2
 865284040295283,
 865284041009402,
 865284042692438,
@@ -45,10 +42,6 @@ lista_imei=[860112047096146,
 867553056728447,
 867553056728371,
 867553053385928
-<<<<<<< HEAD
-=======
-
->>>>>>> pruebas2
 ]
 
 
@@ -82,10 +75,6 @@ def buscarImei(Imei):
     #Copiar informacion de la lista
     WebDriverWait(driver,5).until( 
         EC.element_to_be_clickable((By.XPATH,"/html/body/div/div/div[1]/div[1]/div[1]/div/div[1]/div[2]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[6]")))
-<<<<<<< HEAD
-                                              
-=======
->>>>>>> pruebas2
     #Procesar la lista 
 def obtenerFecha():
         texto_columnas=driver.find_element_by_xpath("/html/body/div/div/div[1]/div[1]/div[1]/div/div[1]/div[2]/div/div[4]/div/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div/div[6]")
