@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import time
-import pyautogui
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import date, datetime
@@ -46,6 +46,8 @@ def eliminar_tarjetas():
     time.sleep(2)
 
     driver.execute_script("window.open('');")
+
+    
     driver.switch_to.window(driver.window_handles[1])
     driver.get("http://intech.com.mx/sosweb/analisis_ruta.html?empresaId=-MUB-3ENmgqhkimA7JXF")
 
