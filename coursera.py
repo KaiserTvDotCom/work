@@ -1,15 +1,18 @@
-import csv
+import pyautogui
+from pyscreeze import center
+import time 
+import sys
 
-def read_employees(csv_file_location):
+print(pyautogui.position())
 
-  with open('employee_file.csv', mode='w') as csvd:
 
-    reader = csv.DictReader(csvd)
-    csv.register_dialect('empDialect', skipinitialspace=True, strict=True)
-    employee_file = csv.DictReader(open(csv_file_location), dialect = 'empDialect')
-    employee_list=[]
-    for data in employee_file:
-        employee_list.append(data)
+pyautogui.click(322,749)
+pyautogui.press('right')
+pyautogui.press('enter')
 
-employee_list = read_employees('/home/student-01-55a867fd64ab/data/employees.csv')
-print (employee_list)
+
+#ejecutar el analizador de tramas
+pyautogui.moveTo(155,539)
+pyautogui.dragTo(433, 603, 0.5,button='left')
+time.sleep(0.2)
+pyautogui.press('enter')

@@ -3,3 +3,5 @@
 *.txt
 *.csv
 /health-checks
+/Run_scripts
+*.png
